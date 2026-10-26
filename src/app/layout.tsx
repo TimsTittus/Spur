@@ -1,11 +1,16 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import Header from '@/components/Header'
+import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
 
 const inter = Inter({
   variable: '--font-inter',
   subsets: ['latin'],
+})
+
+const playfair = Playfair_Display({
+  variable: '--font-display',
+  subsets: ['latin'],
+  weight: ['700', '800', '900'],
 })
 
 export const metadata: Metadata = {
@@ -19,12 +24,9 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${inter.variable} h-full antialiased`}
+      className={`${inter.variable} ${playfair.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col font-sans">
-        <Header />
-        <main className="flex-1">{children}</main>
-      </body>
+      <body className="flex min-h-full flex-col font-sans">{children}</body>
     </html>
   )
 }

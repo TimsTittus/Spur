@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
 import TopicSpinner from '@/components/TopicSpinner'
 import { getAllSlugs, getCategoryBySlug } from '@/lib/mdx'
-import { COLOR_MAP, cn } from '@/lib/utils'
 
 export const instant = false
 
@@ -31,44 +31,40 @@ export default async function CategoryPage({ params }: PageProps<'/[slug]'>) {
 
   if (!category) notFound()
 
-  const colors = COLOR_MAP[category.color]
-
   return (
-    <div className={cn('w-full', colors.gradient)}>
-      <div className="mx-auto flex w-full max-w-lg flex-col items-center px-4 py-10 sm:py-14">
-        <div className="w-full">
-          <Link
-            href="/"
-            className="text-sm text-gray-500 transition-colors hover:text-gray-800"
-          >
-            ← All categories
-          </Link>
+    <div className="flex min-h-screen flex-col bg-white">
+      {/* Minimal top nav */}
+      <nav className="flex items-center justify-between px-6 py-5">
+        <Link
+          href="/"
+          className="text-sm text-gray-400 transition-colors hover:text-gray-700"
+        >
+          ← All categories
+        </Link>
+        <div className="flex items-center gap-2">
+          <span className="text-base" aria-hidden="true">{category.emoji}</span>
+          <span className="text-sm text-gray-400">{category.title}</span>
         </div>
+      </nav>
 
-        <header className="mt-8 flex flex-col items-center text-center">
-          <span className="text-6xl" aria-hidden="true">
-            {category.emoji}
-          </span>
-          <h1 className="mt-4 text-3xl font-bold text-gray-900">{category.title}</h1>
-          <p className="mt-2 max-w-xs text-gray-500">{category.description}</p>
-          <span
-            className={cn(
-              'mt-4 rounded-full border px-3 py-1 text-xs font-medium',
-              colors.badge,
-            )}
-          >
-            {category.topicCount} topics
-          </span>
-        </header>
-
-        <div className="mt-10 w-full">
+      {/* Spinner fills remaining height — Suspense boundary required for PPR/Math.random */}
+      <Suspense
+        fallback={
+          <div className="flex flex-1 items-center justify-center">
+            <span className="text-xs font-semibold tracking-widest text-gray-300">
+              LOADING...
+            </span>
+          </div>
+        }
+      >
+        <div className="flex flex-1 flex-col">
           <TopicSpinner
             topics={category.topics}
             color={category.color}
             categoryTitle={category.title}
           />
         </div>
-      </div>
+      </Suspense>
     </div>
   )
 }

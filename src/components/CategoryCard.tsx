@@ -18,7 +18,6 @@ export default function CategoryCard({ category }: { category: Category }) {
       <span className="line-clamp-2 text-sm font-semibold text-gray-800">
         {category.title}
       </span>
-      <span className="text-xs text-gray-500">{category.topicCount} topics</span>
     </Link>
   )
 }
