@@ -32,7 +32,7 @@ export default async function CategoryPage({ params }: PageProps<'/[slug]'>) {
   if (!category) notFound()
 
   return (
-    <div className="flex min-h-screen flex-col bg-white">
+    <div className="flex h-dvh flex-col overflow-hidden bg-white">
       {/* Minimal top nav */}
       <nav className="flex items-center justify-between px-6 py-5">
         <Link
@@ -57,7 +57,7 @@ export default async function CategoryPage({ params }: PageProps<'/[slug]'>) {
           </div>
         }
       >
-        <div className="flex flex-1 flex-col">
+        <div className="flex min-h-0 flex-1 flex-col">
           <TopicSpinner
             topics={category.topics}
             color={category.color}
